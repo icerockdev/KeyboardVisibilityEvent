@@ -116,7 +116,7 @@ object KeyboardVisibilityEvent {
                 listener.onVisibilityChanged(isOpen)
             }
         }
-        activityRoot.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+        activityRoot?.viewTreeObserver?.addOnGlobalLayoutListener(layoutListener)
 
         return SimpleUnregistrar(activity, layoutListener)
     }
@@ -130,24 +130,25 @@ object KeyboardVisibilityEvent {
     fun isKeyboardVisible(activity: Activity): Boolean {
         val r = Rect()
 
-        val activityRoot = getActivityRoot(activity)
+        val activityRoot = getActivityRoot(activity) ?: return false
 
         activityRoot.getWindowVisibleDisplayFrame(r)
 
         val location = IntArray(2)
-        getContentRoot(activity).getLocationOnScreen(location)
+        return getContentRoot(activity)?.let { viewGroup ->
+            viewGroup.getLocationOnScreen(location)
 
-        val screenHeight = activityRoot.rootView.height
-        val heightDiff = screenHeight - r.height() - location[1]
-
-        return heightDiff > screenHeight * KEYBOARD_MIN_HEIGHT_RATIO
+            val screenHeight = activityRoot.rootView.height
+            val heightDiff = screenHeight - r.height() - location[1]
+            heightDiff > screenHeight * KEYBOARD_MIN_HEIGHT_RATIO
+        } ?: false
     }
 
-    internal fun getActivityRoot(activity: Activity): View {
-        return getContentRoot(activity).getChildAt(0)
+    internal fun getActivityRoot(activity: Activity): View? {
+        return getContentRoot(activity)?.getChildAt(0)
     }
 
-    private fun getContentRoot(activity: Activity): ViewGroup {
+    private fun getContentRoot(activity: Activity): ViewGroup? {
         return activity.findViewById(android.R.id.content)
     }
 }

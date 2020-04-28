@@ -29,12 +29,10 @@ class SimpleUnregistrar internal constructor(
         if (null != activity && null != globalLayoutListener) {
             val activityRoot = KeyboardVisibilityEvent.getActivityRoot(activity)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                activityRoot.viewTreeObserver
-                    .removeOnGlobalLayoutListener(globalLayoutListener)
+                activityRoot?.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
             } else {
                 @Suppress("DEPRECATION")
-                activityRoot.viewTreeObserver
-                    .removeGlobalOnLayoutListener(globalLayoutListener)
+                activityRoot?.viewTreeObserver?.removeGlobalOnLayoutListener(globalLayoutListener)
             }
         }
 
