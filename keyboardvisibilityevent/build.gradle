@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'ru.tetraquark.keyboardvisibilityevent'
+group = 'dev.icerock.keyboardvisibilityevent'
 
 android {
     compileSdkVersion 29
